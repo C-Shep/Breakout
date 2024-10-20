@@ -54,6 +54,11 @@ void PowerupBase::render()
     _window->draw(_sprite);
 }
 
+sf::CircleShape PowerupBase::getSprite()
+{
+    return _sprite;
+}
+
 bool PowerupBase::checkCollisionWithPaddle()
 {
     if (_sprite.getGlobalBounds().intersects(_paddle->getBounds()))

@@ -6,8 +6,6 @@
 #include "Ball.h"
 #include <vector>
 
-#include "PowerupFireBall.h"
-
 
 class PowerupBase
 {
@@ -17,6 +15,7 @@ public:
 
     void update(float dt);
     void render();
+    sf::CircleShape getSprite();
 
     virtual std::pair<POWERUPS, float> applyEffect() = 0; // Pure virtual method for applying the power-up effect
     bool checkCollisionWithPaddle();

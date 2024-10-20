@@ -13,10 +13,22 @@ GameManager::GameManager(sf::RenderWindow* window)
     _masterText.setPosition(50, 400);
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
+
+    view.reset(sf::FloatRect(0.f, 0.f, _window->getSize().x, _window->getSize().y));
+    viewBaseCentre = view.getCenter();
+    view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
+
+    maxShakeTime = .2f;
+    shakeTime = 0.f;
+    maxShakeAmount = sf::Vector2f(20.f, 20.f);
+    shakeAmount = maxShakeAmount;
 }
 
 void GameManager::initialize()
 {
+    //randomize seed
+    srand(time(NULL));
+
     _paddle = new Paddle(_window);
     _brickManager = new BrickManager(_window, this);
     _messagingSystem = new MessagingSystem(_window);
@@ -26,6 +38,7 @@ void GameManager::initialize()
 
     // Create bricks
     _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+
 }
 
 void GameManager::update(float dt)
@@ -39,8 +52,7 @@ void GameManager::update(float dt)
     {
         _masterText.setString("Game over.");
         return;
-    }
-    if (_levelComplete)
+    } else if (_levelComplete)
     {
         _masterText.setString("Level completed.");
         return;
@@ -70,8 +82,9 @@ void GameManager::update(float dt)
     // timer.
     _time += dt;
 
-
-    if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand()%700 == 0)      // TODO parameterise
+    //powerup spawning
+    powerupSpawnTime = _timeLastPowerupSpawned + POWERUP_FREQUENCY;
+    if (_time > powerupSpawnTime && rand() % powerupRandomSpawnChance == 0)    
     {
         _powerupManager->spawnPowerup();
         _timeLastPowerupSpawned = _time;
@@ -81,6 +94,16 @@ void GameManager::update(float dt)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
 
+   
+    if (shakeTime>0)
+    {
+        screenshake(shakeAmount, dt);
+    }
+    else {
+        view.setCenter(viewBaseCentre);
+        shakeAmount = maxShakeAmount;
+    }
+
     // update everything 
     _paddle->update(dt);
     _ball->update(dt);
@@ -89,14 +112,48 @@ void GameManager::update(float dt)
 
 void GameManager::loseLife()
 {
+    //Reduce life
     _lives--;
     _ui->lifeLost(_lives);
 
-    // TODO screen shake.
+    //Turn screenshake on
+    shakeTime = maxShakeTime;
+}
+
+void GameManager::screenshake(sf::Vector2f myShakeAmount, float dt)
+{
+    float xx = shakeAmount.x;
+    float yy = shakeAmount.y;
+
+    int xxReverse = (rand() % 2) + 1;
+    int yyReverse = (rand() % 2) + 1;
+
+    if (xxReverse == 1)
+    {
+        xx *= -1;
+    }
+
+    if (yyReverse == 1)
+    {
+        yy *= -1;
+    }
+
+    view.setCenter(view.getCenter().x + xx, view.getCenter().y + yy);
+
+   // shakeAmount.x = shakeAmount.x / 2;
+  //  shakeAmount.y = shakeAmount.y / 2;
+
+    shakeTime -= dt;
+}
+
+float GameManager::lerp(float a, float b, float t)
+{
+    return a + t * (b - a);
 }
 
 void GameManager::render()
 {
+    _window->setView(view);
     _paddle->render();
     _ball->render();
     _brickManager->render();

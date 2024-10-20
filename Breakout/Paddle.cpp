@@ -50,6 +50,11 @@ void Paddle::render()
     _window->draw(_sprite);
 }
 
+sf::RectangleShape Paddle::getSprite()
+{
+    return _sprite;
+}
+
 sf::FloatRect Paddle::getBounds() const
 {
     return _sprite.getGlobalBounds();
