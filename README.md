@@ -12,6 +12,7 @@ P to pause.
 big/small paddle (blue)
 fast/slow ball (fancy yellow)
 fire ball (green)
+tiny/big ball (green)
 
 # Tasklist
 
@@ -32,4 +33,9 @@ fire ball (green)
 * Implement commentary with calls to an LLM such as LLama
 
 # Time Details and Changelist
-<Add information to this section about the time you've taken for this task along with a professional changelist.>
+6 hours.
+Fixed compile errors.
+Added screenshake when a life is lost.
+Added debris when a brick is broken.
+Added tiny ball power up.
+Added big ball power up.
