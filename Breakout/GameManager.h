@@ -19,9 +19,7 @@ public:
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
-    void screenshake(sf::Vector2f myShakeAmount, float dt);
-
-    float lerp(float a, float b, float t);
+    void screenshake(float dt);
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -64,7 +62,6 @@ private:
     //screenshake
     sf::Vector2f shakeAmount;
     sf::Vector2f maxShakeAmount;
-    float shakeFalloff;
     float maxShakeTime;
     float shakeTime;
 

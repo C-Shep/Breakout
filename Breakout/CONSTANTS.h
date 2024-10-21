@@ -8,8 +8,12 @@ enum POWERUPS
     fastBall,
     slowBall,
     fireBall,
+    tinyBall,
+    bigBall,
     none
 };
+
+constexpr unsigned int POWERUPS_AMOUNT = 7;
 
 // Window settings
 constexpr unsigned int WINDOW_WIDTH = 800;

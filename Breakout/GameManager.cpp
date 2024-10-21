@@ -18,9 +18,10 @@ GameManager::GameManager(sf::RenderWindow* window)
     viewBaseCentre = view.getCenter();
     view.setViewport(sf::FloatRect(0.f, 0.f, 1.f, 1.f));
 
-    maxShakeTime = .2f;
+    //screenshake vars
+    maxShakeTime = .1f;
     shakeTime = 0.f;
-    maxShakeAmount = sf::Vector2f(20.f, 20.f);
+    maxShakeAmount = sf::Vector2f(1.f, 1.f);
     shakeAmount = maxShakeAmount;
 }
 
@@ -97,7 +98,7 @@ void GameManager::update(float dt)
    
     if (shakeTime>0)
     {
-        screenshake(shakeAmount, dt);
+        screenshake(dt);
     }
     else {
         view.setCenter(viewBaseCentre);
@@ -120,35 +121,27 @@ void GameManager::loseLife()
     shakeTime = maxShakeTime;
 }
 
-void GameManager::screenshake(sf::Vector2f myShakeAmount, float dt)
+void GameManager::screenshake(float dt)
 {
-    float xx = shakeAmount.x;
-    float yy = shakeAmount.y;
-
+    //coinflip on if to reverse shake
     int xxReverse = (rand() % 2) + 1;
     int yyReverse = (rand() % 2) + 1;
 
-    if (xxReverse == 1)
-    {
-        xx *= -1;
-    }
+    //x reverse and lerp and tend towards 0
+    if (xxReverse == 1)  shakeAmount.x *= -1;
 
-    if (yyReverse == 1)
-    {
-        yy *= -1;
-    }
+    //y reverse and tend towards 0
+    if (yyReverse == 1) shakeAmount.y *= -1;
 
-    view.setCenter(view.getCenter().x + xx, view.getCenter().y + yy);
+    //clamp shake amount
+    if (shakeAmount.x > maxShakeAmount.x) shakeAmount.x = maxShakeAmount.x;
+    if (shakeAmount.y > maxShakeAmount.y) shakeAmount.y = maxShakeAmount.y;
 
-   // shakeAmount.x = shakeAmount.x / 2;
-  //  shakeAmount.y = shakeAmount.y / 2;
+    //Set the views now shaken position
+    view.setCenter(view.getCenter().x + shakeAmount.x, view.getCenter().y + shakeAmount.y);
 
+    //tick down shake time
     shakeTime -= dt;
-}
-
-float GameManager::lerp(float a, float b, float t)
-{
-    return a + t * (b - a);
 }
 
 void GameManager::render()
