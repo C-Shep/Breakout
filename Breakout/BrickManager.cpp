@@ -1,5 +1,6 @@
 #include "BrickManager.h"
 #include "GameManager.h"
+#include <iostream>
 
 BrickManager::BrickManager(sf::RenderWindow* window, GameManager* gameManager)
     : _window(window), _gameManager(gameManager)
@@ -28,6 +29,27 @@ void BrickManager::render()
     for (auto& brick : _bricks) {
         brick.render(*_window);
     }
+
+    for (auto& debris : _debris)
+    {
+        debris->render();
+    }
+}
+
+void BrickManager::update(float dt)
+{
+    
+    for (int i = 0; i < _debris.size(); i++)
+    {
+        //update debris
+        _debris[i]->update(dt);
+
+        //destroy debris as it leaves screen
+        if (_debris[i]->getPosition().y > _window->getSize().y)
+        {
+            _debris.erase(_debris.begin()+i);
+        }
+    }
 }
 
 int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
@@ -49,7 +71,15 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
         // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
         // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
         brick = _bricks.back();
+
+        for (int i = 0; i < debrisAmount; i++)
+        {
+            Debris* newDebris = new Debris(ballPosition.x, ballPosition.y, _window);
+            _debris.push_back(newDebris);
+        }
+
         _bricks.pop_back();
+
         break;
     }
     if (_bricks.size() == 0)

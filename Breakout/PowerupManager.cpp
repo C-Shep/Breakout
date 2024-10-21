@@ -56,7 +56,6 @@ void PowerupManager::render()
 
 void PowerupManager::spawnPowerup()
 {
-
     switch (rand() % POWERUPS_AMOUNT)
     {
     case 0:
