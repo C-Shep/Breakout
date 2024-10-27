@@ -157,6 +157,7 @@
     <ClCompile Include="PowerupSlowBall.cpp" />
     <ClCompile Include="PowerupSmallPaddle.cpp" />
     <ClCompile Include="PowerupTinyBall.cpp" />
+    <ClCompile Include="Trail.cpp" />
     <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -177,6 +178,7 @@
     <ClInclude Include="PowerupSlowBall.h" />
     <ClInclude Include="PowerupSmallPaddle.h" />
     <ClInclude Include="PowerupTinyBall.h" />
+    <ClInclude Include="Trail.h" />
     <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>

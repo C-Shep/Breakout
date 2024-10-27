@@ -94,6 +94,17 @@ void Ball::update(float dt)
     {
         _direction.y *= -1; // Bounce vertically
     }
+
+    //Trail
+    trailTimer -= dt;
+
+    if (trailTimer<=0)
+    {
+        Trail* newTrail = new Trail(_sprite.getPosition().x, _sprite.getPosition().y, _window);
+        _trails.push_back(newTrail);
+
+        trailTimer = trailTimerMax;
+    }
 }
 
 void Ball::render()

@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "Debris.h"
+#include "Trail.h"
 
 class GameManager;  // forward declaration
 
@@ -24,6 +25,10 @@ private:
     bool _isAlive;
     bool _isFireBall;
     float _timeWithPowerupEffect;
+
+    float trailTimerMax = 0.5f;
+    float trailTimer = trailTimerMax;
+    std::vector<Trail*> _trails;
 
     GameManager* _gameManager;  // Reference to the GameManager
 
