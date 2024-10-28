@@ -17,8 +17,11 @@ private:
 	sf::RenderWindow* _window;
 
 	float trailRadius;
-	int alpha;
+	float alpha;
 	float fadeSpeed;
 	sf::Color trailColour;
+
+	int startAlpha = 255;
+	int endAlpha = 0;
 };
 

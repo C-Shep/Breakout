@@ -3,14 +3,18 @@
 
 Trail::Trail(float x, float y, sf::RenderWindow* window)
 {
+    _window = window;
+
     trailRadius = 5.f;
-    alpha = 255.f;
-    fadeSpeed = 0.5f;
-    trailColour = sf::Color(255,255,255, alpha);
+    alpha = 255;
+    fadeSpeed = 500.5f;
+
+    trailColour = sf::Color(255,255,255,alpha);
 
     sprite.setRadius(trailRadius);
     sprite.setFillColor(trailColour);
     sprite.setPosition(x, y);
+    
 }
 
 Trail::~Trail()
@@ -20,14 +24,13 @@ Trail::~Trail()
 
 void Trail::update(float dt)
 {
-    //fly through air and gravity
-    alpha -= fadeSpeed * dt;
-    sprite.setFillColor(trailColour);
-
-    if ()
+    if (alpha >= 0)
     {
-
+        alpha -= fadeSpeed * dt;
     }
+    
+    trailColour = sf::Color(255, 255, 255, (int)alpha);
+    sprite.setFillColor(trailColour);
 }
 
 int Trail::getAlpha()

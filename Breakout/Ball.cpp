@@ -36,6 +36,29 @@ void Ball::update(float dt)
         }
     }
 
+    //Trail
+    trailTimer -= dt;
+
+    if (trailTimer <= 0)
+    {
+        Trail* newTrail = new Trail(_sprite.getPosition().x + _sprite.getRadius(), _sprite.getPosition().y + _sprite.getRadius(), _window);
+        _trails.push_back(newTrail);
+
+        trailTimer = trailTimerMax;
+    }
+
+    //Update Trails
+    for (int i = 0; i < _trails.size(); i++)
+    {
+        //update debris
+        _trails[i]->update(dt);
+
+        if (_trails[i]->getAlpha() <= 0)
+        {
+            _trails.erase(_trails.begin() + i);
+        }
+    }
+
     // Fireball effect
     if (_isFireBall)
     {
@@ -95,21 +118,18 @@ void Ball::update(float dt)
         _direction.y *= -1; // Bounce vertically
     }
 
-    //Trail
-    trailTimer -= dt;
 
-    if (trailTimer<=0)
-    {
-        Trail* newTrail = new Trail(_sprite.getPosition().x, _sprite.getPosition().y, _window);
-        _trails.push_back(newTrail);
 
-        trailTimer = trailTimerMax;
-    }
 }
 
 void Ball::render()
 {
     _window->draw(_sprite);
+
+    for (auto& trail : _trails)
+    {
+        trail->render();
+    }
 }
 
 void Ball::setVelocity(float coeff, float duration)

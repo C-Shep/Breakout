@@ -26,7 +26,7 @@ private:
     bool _isFireBall;
     float _timeWithPowerupEffect;
 
-    float trailTimerMax = 0.5f;
+    float trailTimerMax = 0.05f;
     float trailTimer = trailTimerMax;
     std::vector<Trail*> _trails;
 
